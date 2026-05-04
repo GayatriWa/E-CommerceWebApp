@@ -9,12 +9,6 @@ const Home = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-
-  //     useEffect(() => {
-  //   console.log("DISPATCH RUNNING");   // 👈 MUST PRINT
-  //   dispatch(fetchProducts());
-  // }, [dispatch]);
-
   return (
     <div className='relative w-full h-[300px] md:h-[400px]'>
 
