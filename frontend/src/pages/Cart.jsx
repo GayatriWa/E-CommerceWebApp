@@ -19,7 +19,7 @@ const Cart = () => {
         try {
             const token = localStorage.getItem("token")
 
-            await axios.delete(`http://localhost:5000/api/cart/${id}`,{
+            await axios.delete(`${import.meta.env.VITE_API_URL}/api/cart/${id}`,{
                 
             headers:{
             Authorization: `Bearer ${token}`
@@ -41,7 +41,7 @@ const Cart = () => {
         try {
             const token = localStorage.getItem("token")
 
-        await axios.put(`http://localhost:5000/api/cart/${id}`,
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/cart/${id}`,
             {
                 quantity:newQty,
             },
@@ -63,7 +63,7 @@ const Cart = () => {
         try {
             const token = localStorage.getItem("token")
 
-            const res = await axios.post( "http://localhost:5000/api/orders/create",
+            const res = await axios.post( `${import.meta.env.VITE_API_URL}/api/orders/create`,
                 {},
                 {
                  headers:{

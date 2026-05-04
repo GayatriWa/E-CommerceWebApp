@@ -17,9 +17,11 @@ const Category = () => {
   const categoryMap = {}
 
   items.forEach((item) => {
-    if (item.category && !categoryMap[item.category]) {
-      categoryMap[item.category] = item
-    }
+    const categoryKey = item.category?.toLowerCase()
+
+if (categoryKey && !categoryMap[categoryKey]) {
+  categoryMap[categoryKey] = item
+}
   })
 
   const categories = Object.values(categoryMap)
@@ -33,7 +35,7 @@ const Category = () => {
           <div
             key={index}
             onClick={() =>
-              navigate(`/products/${item.category.toLowerCase()}`)
+              navigate(`/products/${item.category?.toLowerCase()}`)
             }
             className='cursor-pointer rounded-lg overflow-hidden shadow hover:shadow-lg transition'
           >

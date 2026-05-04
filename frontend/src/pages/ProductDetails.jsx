@@ -37,7 +37,7 @@ const ProductDetails = () => {
     }
 
     await axios.post(
-      "http://localhost:5000/api/cart/add",
+      `${import.meta.env.VITE_API_URL}/api/cart/add`,
       {
         product: product._id,
         quantity: qty,
