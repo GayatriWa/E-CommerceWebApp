@@ -39,6 +39,7 @@ const createOrder = async(req, res)=> {
             message:"order place successfully",
             order
         })
+        console.log("CREATE USER:", userId);
     } catch (error) {
         res.status(500).json({
             error:error.message
@@ -48,7 +49,7 @@ const createOrder = async(req, res)=> {
 
 const getOrder = async (req,res)=>{
     try {
-        const userId = res.user.id
+        const userId = req.user.id
 
         const orders = await Order.find({user: userId}).populate("items.product")
 
@@ -56,7 +57,7 @@ const getOrder = async (req,res)=>{
             orders,
         })
 
-        
+        console.log("FETCH USER:", userId);
     } catch (error) {
         res.status(500).json({
             error:error.message
@@ -64,5 +65,5 @@ const getOrder = async (req,res)=>{
     }
 }
 
-module.exports = {createOrder}
+module.exports = {createOrder, getOrder}
 

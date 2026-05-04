@@ -8,7 +8,7 @@ const register = async (req,res) => {
 
         const {name, email, password} = req.body
 
-        const existingUser = await user.findOne({email})
+        const existingUser = await User.findOne({email})
 
         if(existingUser){
             return res.status(400).json({
@@ -58,7 +58,7 @@ const login = async (req,res) =>{
 
          // 3. generate token
 
-         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+         const token = jwt.sign({id: user._id, role: user.role}, process.env.JWT_SECRET)
 
          res.status(200).json({
             message:"user login successfully",

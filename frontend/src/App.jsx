@@ -4,7 +4,8 @@ import Navbar from './components/Navbar'
 
 const App = () => {
   return (
-    <div><Navbar />
+    <div className="pt-20">
+      <Navbar />
       <AppRoutes /></div>
   )
 }

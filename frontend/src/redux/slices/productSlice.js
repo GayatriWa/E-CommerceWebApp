@@ -5,11 +5,14 @@ import axios from "axios"
 // 🔥 API call (async)
 export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
-
     async (_, {rejectWithValue}) =>{
      try {
+        console.log("FAKE FETCH")
+
          const res =  await axios.get("http://localhost:5000/api/products")
+         console.log("API DATA:", res.data); 
          return res.data.products;
+         
      } catch (error) {
 
         console.log("error",error)
@@ -17,8 +20,7 @@ export const fetchProducts = createAsyncThunk(
         
      }
     }
-)
-
+);
 const productSlice = createSlice({
     name: "products",
     initialState: {
