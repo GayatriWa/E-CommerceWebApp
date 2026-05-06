@@ -1,26 +1,34 @@
 const Cart =  require("../models/cart.model")
 
-const addToCart = async (req,res)=>{
-    try {
-       const userId = req.user.id;
-       const {product, quantity} = req.body
-       
-       const cartItem = await Cart.create({
-        user:userId,
-        product,
-        quantity
-       })
+const addToCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { product, quantity } = req.body;
 
-       res.status(201).json({
-        message:"Product added to cart",
-        cartItem
-       })
-    } catch (error) {
-        res.status(500).json({
-            error: error.message
-        })
+    // 🔥 check if already exists
+    let cartItem = await Cart.findOne({ user: userId, product });
+
+    if (cartItem) {
+      cartItem.quantity += quantity;
+      await cartItem.save();
+    } else {
+      cartItem = await Cart.create({
+        user: userId,
+        product,
+        quantity,
+      });
     }
-}
+
+    res.status(201).json({
+      message: "Product added to cart",
+      cartItem,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
 
 const getCart = async(req, res) =>{
     try {
@@ -33,7 +41,7 @@ const getCart = async(req, res) =>{
         })
         
     } catch (error) {
-        res.status(500).jaon({
+        res.status(500).json({
             error: error.message,
         })
     }

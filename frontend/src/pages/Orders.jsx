@@ -12,6 +12,8 @@ const Orders = () => {
  },[dispatch])
  
  if(loading) return <h2>Loading ...</h2>
+ console.log(items);
+ console.log(items[0]?.items);
 
   return (
     <div className="p-6">
@@ -38,17 +40,42 @@ const Orders = () => {
           </div>
 
           {/* Items */}
-          <div className="border-t pt-3 space-y-2">
-            {order.items.map((item) => (
-              <div
-                key={item.product._id}
-                className="flex justify-between"
-              >
-                <p>{item.product.name}</p>
-                <p>x {item.quantity}</p>
-              </div>
-            ))}
-          </div>
+          <div className="border-t pt-3 space-y-3">
+  {order.items.map((item, index) => (
+  <div
+    key={index}
+    className="flex items-center justify-between"
+  >
+    {/* LEFT: Image + Details */}
+    <div className="flex items-center gap-4">
+      
+      <img
+        src={item.image || "https://via.placeholder.com/80"}
+        alt={item.name}
+        className="w-16 h-16 object-cover rounded"
+        onError={(e) =>
+          (e.target.src = "https://via.placeholder.com/80")
+        }
+      />
+
+      <div>
+        <p className="font-medium">
+          {item.name || "No name"}
+        </p>
+
+        <p className="text-sm text-gray-500">
+          ₹{item.price || 0}
+        </p>
+      </div>
+    </div>
+
+    {/* RIGHT: Quantity */}
+    <p className="font-semibold">
+      x {item.quantity}
+    </p>
+  </div>
+  ))}
+</div>
 
           {/* Total */}
           <div className="border-t mt-3 pt-3 flex justify-between font-bold">

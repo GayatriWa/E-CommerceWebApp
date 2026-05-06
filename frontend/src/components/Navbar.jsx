@@ -12,12 +12,12 @@ const Navbar = () => {
 
  const handleLogout = () =>{
   localStorage.removeItem("token")
-  navigate("/")
+  navigate("/login")
  }
 
  const handleOrders = () => {
     if (!token) {
-      navigate("/"); // go to login
+      navigate("/login"); // go to login
     } else {
       navigate("/orders");
     }
@@ -70,7 +70,7 @@ const Navbar = () => {
 
               {!token ?(
                 <>
-                  <p onClick={()=>navigate("/")}
+                  <p onClick={()=>navigate("/login")}
                   className ="px-4 py-2 hover:bg-gray-200 cursor-pointer">Login</p>
 
                   <p onClick={()=>navigate("/register")}

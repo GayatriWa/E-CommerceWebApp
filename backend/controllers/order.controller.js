@@ -2,6 +2,8 @@ const Order = require("../models/order.model")
 const Cart = require("../models/cart.model")
 
 const createOrder = async(req, res)=> {
+
+    console.log("🚀 NEW createOrder RUNNING");
     try {
         const userId = req.user.id
         const cartItems = await Cart.find({user: userId}).populate("product")
@@ -12,17 +14,19 @@ const createOrder = async(req, res)=> {
             })
         }
         // calculate total
+        let totalAmount = 0;
 
-        let totalAmount = 0
+       const items = cartItems.map((item) => {
+        totalAmount += item.product.price * item.quantity;
 
-        const items = cartItems.map((item)=>{
-            totalAmount += item.product.price * item.quantity;
-
-            return{
-                product: item.product._id,
-                quantity: item.quantity
-            }
-        })
+        return {
+            product: item.product._id,
+            name: item.product.name,
+            price: item.product.price,
+            image: item.product.image,
+            quantity: item.quantity,
+        };
+        });
 
         //create order
 
@@ -40,11 +44,15 @@ const createOrder = async(req, res)=> {
             order
         })
         console.log("CREATE USER:", userId);
+        console.log("ORDER ITEMS:", items);
+        console.log("CART ITEMS:", cartItems);
+        
     } catch (error) {
         res.status(500).json({
             error:error.message
         })
     }
+
 }
 
 const getOrder = async (req,res)=>{

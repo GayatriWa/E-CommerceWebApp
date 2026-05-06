@@ -62,14 +62,19 @@ const Cart = () => {
     const handleOrder = async () =>{
         try {
             const token = localStorage.getItem("token")
+            console.log("🔥 PLACE ORDER CLICKED");
+            console.log(import.meta.env.VITE_API_URL)
 
             const res = await axios.post( `${import.meta.env.VITE_API_URL}/api/orders/create`,
                 {},
+    
                 {
                  headers:{
                     Authorization: `Bearer ${token}`
                     }
                 }
+                
+                
             )
 
             alert("Order place succesfully")
@@ -90,38 +95,65 @@ const Cart = () => {
         ):(
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                 {items.map((item)=>(
-                    <div key={item._id}
-                    className='border p-4 rounded-lg flex flex-col gap-3 shadow bg-white'>
-                        
-                        <div>
-                            <h3 className='font-semibold text-lg'>{item.product.name}</h3>
-                            <p>₹{item.price}</p>
-                        </div>
+                    <div
+                                key={item._id}
+                                className="border p-4 rounded-lg flex flex-col gap-3 shadow bg-white"
+                                >
+                                {/* 🔥 IMAGE + NAME */}
+                                <div className="flex items-center gap-4">
 
-                        <p>QTY: {item.quantity}</p>
+                                    <img
+                                    src={item.product?.image || "https://via.placeholder.com/100"}
+                                    alt={item.product?.name}
+                                    className="w-20 h-20 object-cover rounded"
+                                    onError={(e) => {
+                                        e.target.src = "https://via.placeholder.com/100";
+                                    }}
+                                    />
 
-                        
+                                    <div>
+                                    <h3 className="font-semibold text-lg">
+                                        {item.product?.name || "No name"}
+                                    </h3>
 
-                        <div className="flex items-center gap-3">
+                                    <p className="text-gray-600">
+                                        ₹{item.product?.price || "0"}
+                                    </p>
+                                    </div>
+                                </div>
 
-                            <button
-                                onClick={() => handleUpdateQty(item._id, item.quantity - 1)}
-                                className="bg-gray-300 px-2 rounded"
-                            >
-                                -
-                            </button>
+                                {/* 🔥 QTY */}
+                                <p>QTY: {item.quantity}</p>
 
-                            <span>{item.quantity}</span>
+                                {/* 🔥 BUTTONS */}
+                                <div className="flex items-center gap-3">
+                                    <button
+                                    onClick={() =>
+                                        handleUpdateQty(item._id, Math.max(1, item.quantity - 1))
+                                    }
+                                    className="bg-gray-300 px-2 rounded"
+                                    >
+                                    -
+                                    </button>
 
-                            <button
-                                onClick={() => handleUpdateQty(item._id, item.quantity + 1)}
-                                className="bg-gray-300 px-2 rounded"
-                            >
-                                +
-                            </button>
-                            </div>
+                                    <span>{item.quantity}</span>
 
-                             <button onClick={()=> handleRemove(item._id)} className='mt-4 text-white w-fit px-4 py-2 bg-green-500 rounded hover:bg-green-600'>Remove</button>
+                                    <button
+                                    onClick={() => handleUpdateQty(item._id, item.quantity + 1)}
+                                    className="bg-gray-300 px-2 rounded"
+                                    >
+                                    +
+                                    </button>
+                                </div>
+
+                                {/* 🔥 REMOVE */}
+                                <button
+                                    onClick={() => handleRemove(item._id)}
+                                    className="mt-4 text-white w-fit px-4 py-2 bg-red-500 rounded hover:bg-red-600"
+                                >
+                                    Remove
+                                </button>
+
 
                              {items.length > 0 && (
                                  <div className="mt-6 flex justify-end">
@@ -134,6 +166,7 @@ const Cart = () => {
                                 </div>
                              )}
                     </div>
+                  
                 ))}
             </div>
         )}

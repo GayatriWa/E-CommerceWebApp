@@ -13,7 +13,7 @@ const Register = () => {
 
             alert("register succesfully")
 
-            navigate("/")
+            navigate("/login")
         } catch (error) {
             console.log(error.response?.data)
             alert("registration failed")
