@@ -87,7 +87,7 @@ const Cart = () => {
     }
 
   return (
-    <div className='p-6'>
+    <div className='min-h-screen p-6 bg-[#F5F4F2] pt-28'>
         <h2 className='text-2xl mb-6 font-bold'>Cart</h2>
 
         {items.length === 0?(

@@ -16,8 +16,8 @@ const Orders = () => {
  console.log(items[0]?.items);
 
   return (
-    <div className="p-6">
-  <h2 className="text-2xl font-bold mb-6">My Orders</h2>
+    <div className="p-6 bg-[#F5F4F2]">
+  <h2 className="text-4xl font-bold text-center text-[#75232B] mb-10 tracking-wide">My Orders</h2>
 
   {items.length === 0 ? (
     <p>No orders found</p>

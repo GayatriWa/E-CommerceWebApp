@@ -1,120 +1,208 @@
-import React, { useState, useEffect } from 'react'
-import {Link, useNavigate } from 'react-router-dom'
-import {FaSearch, FaHeart, FaUser, FaShoppingBag} from "react-icons/fa"
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
+import {
+  FaSearch,
+  FaRegHeart,
+  FaUser,
+  FaShoppingBag,
+} from "react-icons/fa";
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
 
-  const [open, setOpen ] = useState(false)
- const navigate =  useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
 
- const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
- const handleLogout = () =>{
-  localStorage.removeItem("token")
-  navigate("/login")
- }
+  // LOGOUT
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
- const handleOrders = () => {
+  // ORDERS
+  const handleOrders = () => {
     if (!token) {
-      navigate("/login"); // go to login
+      navigate("/login");
     } else {
       navigate("/orders");
     }
   };
 
+  // CLOSE DROPDOWN
   useEffect(() => {
-  const handleClickOutside = () => {
-    setOpen(false);
-  };
+    const handleClickOutside = () => {
+      setOpen(false);
+    };
 
-  window.addEventListener("click", handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
 
-  return () => window.removeEventListener("click", handleClickOutside);
-}, []);
+    return () => {
+      window.removeEventListener(
+        "click",
+        handleClickOutside
+      );
+    };
+  }, []);
 
   return (
+    // bg-[#F5F4F2]/90
+    <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 backdrop-blur-md bg-[#F5F4F2] text-[#75232B] border-b">
 
-    <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-4 bg-gray-800/60 backdrop-blur-md text-gray-200">
+      {/* LOGO */}
+      <h1
+        className="text-3xl font-bold cursor-pointer tracking-wide"
+        onClick={() => navigate("/")}
+      >
+        StyleAura
+      </h1>
 
-      {/* Left side */}
-        <h1 className='text-2xl font-bold cursor-pointer tracking-wide' onClick={()=>navigate("/")}>WOMEN's</h1>
+      {/* CENTER MENU */}
+      <div className="flex gap-10 font-medium text-[15px] group">
 
-        {/* Center Menu  */}
+        <p
+          onClick={() => navigate("/")}
+          className={`cursor-pointer transition duration-300
+          ${
+            location.pathname === "/"
+              ? "text-[#75232B]"
+              : "text-[#75232B]"
+          }
+          group-hover:text-[#b38a8f] hover:!text-[#75232B]
+          `}
+        >
+          Home
+        </p>
 
-        <div className='flex gap-8 font-medium'>
-          <p onClick={()=>navigate("/")} className="cursor-pointer text-white/80 hover:text-white transition duration-100"> Home </p>
-          <p className="cursor-pointer text-white/80 hover:text-white transition duration-100"> Clothing </p>
-          <p className="cursor-pointer text-white/80 hover:text-white transition duration-100">Footware</p>
-          <p className="cursor-pointer text-white/80 hover:text-white transition duration-100"> MakeUp</p>
-        </div>
+        <p
+          onClick={() => navigate("/products")}
+          className={`cursor-pointer transition duration-300
+          ${
+            location.pathname.includes("/products")
+              ? "text-[#75232B]"
+              : "text-[#75232B]"
+          }
+          group-hover:text-[#b38a8f] hover:!text-[#75232B]
+          `}
+        >
+          Shop
+        </p>
 
-         
-        <div className='relative flex items-center gap-6 text-lg'>
-            {/* Right side icons */}
-           <FaSearch className="cursor-pointer  text-white/80 hover:text-white transition duration-100" />
-          <FaHeart className="cursor-pointer  text-white/80 hover:text-white transition duration-100"/>
+        <p
+              onClick={() => navigate("/blogs")}
+              className="cursor-pointer text-[#75232B]
+              transition duration-300
+              group-hover:text-[#b38a8f]
+              hover:!text-[#75232B]"
+            >
+              Blogs
+            </p>
 
-          {/* Profile Icon */}
-           <FaUser
-        onClick={(e) =>{e.stopPropagation(); setOpen(!open)}}
-        className="cursor-pointer text-lg  text-white/80 hover:text-white transition duration-100"/>
+        <p
+          onClick={() => navigate("/contact")}
+          className="cursor-pointer text-[#75232B]
+          transition duration-300
+          group-hover:text-[#b38a8f]
+          hover:!text-[#75232B]"
+        >
+          Contact Us
+        </p>
 
-       <FaShoppingBag onClick={()=>navigate("/cart")} className="cursor-pointer  text-white/80 hover:text-white transition duration-100" />
+      </div>
+      {/* RIGHT ICONS */}
+      <div className="relative flex items-center gap-7 text-lg">
 
+        {/* SEARCH */}
+        <FaSearch className="cursor-pointer hover:scale-110 transition duration-200" />
 
-            {/* Dropdown */}
-            {open && (
-                 <div className="absolute right-0 top-full pt-2 w-40">
-                  <div className="bg-white text-black rounded shadow-lg">
+        {/* HEART */}
+        <FaRegHeart
+          onClick={() => navigate("/favorites")}
+          className="cursor-pointer hover:scale-110 transition"/>
+              {/* USER */}
+        <FaUser
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen(!open);
+          }}
+          className="cursor-pointer hover:scale-110 transition duration-200"
+        />
 
-              {!token ?(
+        {/* CART */}
+        <FaShoppingBag
+          onClick={() => navigate("/cart")}
+          className="cursor-pointer hover:scale-110 transition duration-200"
+        />
+
+        {/* DROPDOWN */}
+        {open && (
+          <div className="absolute right-0 top-full pt-4 w-48">
+
+            <div className="bg-white text-black rounded-xl shadow-xl overflow-hidden border">
+
+              {!token ? (
                 <>
-                  <p onClick={()=>navigate("/login")}
-                  className ="px-4 py-2 hover:bg-gray-200 cursor-pointer">Login</p>
+                  <p
+                    onClick={() => navigate("/login")}
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer transition"
+                  >
+                    Login
+                  </p>
 
-                  <p onClick={()=>navigate("/register")}
-                    className ="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  >Sign Up</p>
+                  <p
+                    onClick={() => navigate("/register")}
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer transition"
+                  >
+                    Sign Up
+                  </p>
 
-                  <p onClick={handleOrders} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
-                Orders
-              </p>
+                  <p
+                    onClick={handleOrders}
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer transition"
+                  >
+                    Orders
+                  </p>
                 </>
-
-              ):(
+              ) : (
                 <>
-                  <p onClick={()=>navigate("/orders")}
-                  className ="px-4 py-2 hover:bg-gray-200 cursor-pointer">Orders</p>
+                  <p
+                    onClick={() => navigate("/orders")}
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer transition"
+                  >
+                    Orders
+                  </p>
 
-                <p onClick={()=>navigate("/profile")}
-                  className ="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                >Edit Profile</p>
+                  <p
+                    onClick={() => navigate("/profile")}
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer transition"
+                  >
+                    Edit Profile
+                  </p>
 
-                <p onClick={handleLogout}
-                  className ="px-4 py-2 hover:bg-gray-200 cursor-pointer text-red-500"
-                >Logout</p>
+                  <p
+                    onClick={handleLogout}
+                    className="px-5 py-3 hover:bg-red-50 cursor-pointer text-red-500 transition"
+                  >
+                    Logout
+                  </p>
                 </>
               )}
+
               <p
                 onClick={() => navigate("/contact")}
-                className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                className="px-5 py-3  cursor-pointer transition"
               >
                 Contact Us
               </p>
 
-              </div>
             </div>
-            )}
-        </div>
-        
-        </nav>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
 
-
-
-
-        
-  )
-}
-
-export default Navbar
+export default Navbar;

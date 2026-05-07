@@ -7,6 +7,10 @@ import Register from '../pages/Register'
 import Orders from '../pages/Orders'
 import Home from '../pages/Home'
 import ProductDetails from '../pages/ProductDetails'
+import Favorites from '../pages/Favorites'
+import Contact from '../pages/Contact'
+import Blogs from '../pages/Blogs'
+import Profile from '../pages/Profile'
 
 const AppRoutes = () => {
   return (
@@ -20,6 +24,10 @@ const AppRoutes = () => {
         <Route path='/cart' element={<Cart />} />
         <Route path='/register' element={<Register /> } />
         <Route path='/orders' element={<Orders/>} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/profile" element={<Profile />} />
         
     </Routes>
   )

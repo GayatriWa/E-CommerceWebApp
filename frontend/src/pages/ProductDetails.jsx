@@ -57,7 +57,7 @@ const ProductDetails = () => {
 };
 
   return (
-    <div className="pt-20 p-8">
+    <div className="pt-20 p-8 bg-[#F5F4F2]">
       <div className="grid md:grid-cols-2 gap-10">
         
         {/* LEFT */}

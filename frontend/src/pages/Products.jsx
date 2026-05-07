@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/slices/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import {
+  addToFavorite,
+  removeFromFavorite,
+} from "../redux/slices/favoriteSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -12,6 +17,16 @@ const Products = () => {
   const { items, loading, error } = useSelector(
     (state) => state.products
   );
+
+  const favoriteItems = useSelector(
+  (state) => state.favorite.items
+);
+
+const isFavorite = (id) => {
+  return favoriteItems.some(
+    (item) => item._id === id
+  );
+};
 
   // 🔥 Fetch products
   useEffect(() => {
@@ -66,9 +81,9 @@ const Products = () => {
 
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-[#F5F4F2]">
       {/* 🔥 Title */}
-      <h2 className="text-2xl font-bold mb-6 capitalize">
+      <h2 className="text-4xl font-bold text-center text-[#75232B] mb-10 tracking-wide">
         {category ? `${category} Products` : "All Products"}
       </h2>
 
@@ -80,41 +95,65 @@ const Products = () => {
       {/* 🔥 Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((item) => (
-          <div
-            key={item._id}
-            className="border p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
-          >
-            {/* ✅ IMAGE */}
-            <img
-              src={item.image || "https://via.placeholder.com/300"}
-              alt={item.name}
-              onError={(e) =>
-                (e.target.src = "https://via.placeholder.com/300")
-              }
-              className="h-[200px] w-full object-cover rounded"
-              onClick={() => navigate(`/product/${item._id}`)}
-            />
+  <div
+    key={item._id}
+    className="relative border p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer bg-white"
+  >
 
-            {/* ✅ DETAILS */}
-            <h3 className="text-lg font-semibold mt-2">
-              {item.name}
-            </h3>
+    {/* ❤️ FAVORITE BUTTON */}
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
 
-            <p className="text-gray-600">₹{item.price}</p>
+        if (isFavorite(item._id)) {
+          dispatch(removeFromFavorite(item._id));
+        } else {
+          dispatch(addToFavorite(item));
+        }
+      }}
+      className="absolute top-6 right-6 z-10 bg-white p-2 rounded-full shadow-md"
+    >
+      {isFavorite(item._id) ? (
+        <FaHeart className="text-red-500 text-lg" />
+      ) : (
+        <FaRegHeart className="text-lg" />
+      )}
+    </button>
 
-            <p className="text-sm text-gray-500">
-              {item.category}
-            </p>
+    {/* IMAGE */}
+    <img
+      src={item.image || "https://via.placeholder.com/300"}
+      alt={item.name}
+      onError={(e) =>
+        (e.target.src = "https://via.placeholder.com/300")
+      }
+      className="h-[260px] w-full object-cover rounded"
+      onClick={() => navigate(`/product/${item._id}`)}
+    />
 
-            {/* ✅ BUTTON */}
-            <button
-              onClick={() => handleAddToCart(item._id)}
-              className="mt-4 text-white w-full py-2 bg-green-500 rounded hover:bg-green-600"
-            >
-              Add to Cart
-            </button>
-          </div>
-        ))}
+    {/* DETAILS */}
+    <h3 className="text-lg font-semibold mt-3">
+      {item.name}
+    </h3>
+
+    <p className="text-gray-600">
+      ₹{item.price}
+    </p>
+
+    <p className="text-sm text-gray-500">
+      {item.category}
+    </p>
+
+    {/* ADD TO CART */}
+    <button
+      onClick={() => handleAddToCart(item._id)}
+      className="mt-4 text-white w-full py-2 bg-green-500 rounded hover:bg-green-600"
+    >
+      Add to Cart
+    </button>
+
+  </div>
+))}
       </div>
     </div>
   );

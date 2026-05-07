@@ -4,9 +4,10 @@ import Navbar from './components/Navbar'
 
 const App = () => {
   return (
-    <div className="pt-20">
+    <div className="pt-19">
       <Navbar />
-      <AppRoutes /></div>
+      <AppRoutes />
+    </div>
   )
 }
 
