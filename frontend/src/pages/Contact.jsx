@@ -1,6 +1,9 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const Contact = () => {
+
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -9,26 +12,47 @@ const Contact = () => {
   });
 
   const handleChange = (e) => {
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    alert("Message Sent Successfully ❤️");
+    try {
 
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
+      setLoading(true);
+
+      // fake delay
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1200)
+      );
+
+      toast.success("Message Sent Successfully ❤️");
+
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+
+    } catch (error) {
+
+      toast.error("Failed to send message");
+
+    } finally {
+
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F4F2] pt-28 px-6 md:px-16 pb-16">
+
+    <div className="min-h-screen bg-[#F5F4F2] pt-28 px-4 md:px-16 pb-16">
 
       {/* HEADER */}
       <div className="text-center mb-14">
@@ -37,7 +61,7 @@ const Contact = () => {
           Get In Touch
         </p>
 
-        <h1 className="text-5xl font-bold text-[#75232B]">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#75232B]">
           Contact Us
         </h1>
 
@@ -47,18 +71,18 @@ const Contact = () => {
       <div className="grid md:grid-cols-2 gap-12 items-center">
 
         {/* LEFT IMAGE */}
-        <div className="overflow-hidden rounded-3xl shadow-lg">
+        <div className="overflow-hidden rounded-3xl shadow-lg hidden md:block">
 
           <img
             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop"
             alt="contact"
-            className="w-full h-[650px] object-cover"
+            className="w-full h-[650px] object-cover hover:scale-105 transition duration-700"
           />
 
         </div>
 
         {/* RIGHT FORM */}
-        <div className="bg-white p-10 rounded-3xl shadow-lg">
+        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-lg">
 
           <h2 className="text-3xl font-bold text-[#75232B] mb-8">
             Send Message
@@ -129,9 +153,12 @@ const Contact = () => {
             {/* BUTTON */}
             <button
               type="submit"
-              className="w-full bg-[#75232B] text-white py-4 rounded-xl hover:bg-[#5d1b22] transition duration-300"
+              disabled={loading}
+              className="w-full bg-[#75232B] text-white py-4 rounded-xl hover:bg-[#5d1b22] transition duration-300 disabled:opacity-60"
             >
-              Send Message
+
+              {loading ? "Sending..." : "Send Message"}
+
             </button>
 
           </form>

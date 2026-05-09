@@ -1,67 +1,46 @@
 import { useNavigate } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { useEffect } from "react";
+
+import { fetchBlogs } from "../redux/slices/blogSlice";
+
 const Blogs = () => {
 
   const navigate = useNavigate();
 
-  const blogData = [
-    {
-      id: 1,
-      title: "Top Fashion Trends In 2026",
-      image:
-        "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1600&auto=format&fit=crop",
-      description:
-        "Discover the latest fashion trends and styles dominating 2026.",
-    },
+  const dispatch = useDispatch();
 
-    {
-      id: 2,
-      title: "Luxury Watches Collection",
-      image:
-        "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1600&auto=format&fit=crop",
-      description:
-        "Explore premium luxury watches and timeless accessories.",
-    },
+  const { items, loading } = useSelector(
+    (state) => state.blogs
+  );
 
-    {
-      id: 3,
-      title: "Best Makeup Products For Women",
-      image:
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1600&auto=format&fit=crop",
-      description:
-        "Top beauty and makeup products every woman should own.",
-    },
+  // FETCH BLOGS
+  useEffect(() => {
 
-    {
-      id: 4,
-      title: "Modern Streetwear Fashion",
-      image:
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1600&auto=format&fit=crop",
-      description:
-        "Streetwear trends redefining modern fashion culture.",
-    },
+    dispatch(fetchBlogs());
 
-    {
-      id: 5,
-      title: "Perfect Shoes For Every Outfit",
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1600&auto=format&fit=crop",
-      description:
-        "Find the perfect shoes matching every style and occasion.",
-    },
+  }, [dispatch]);
 
-    {
-      id: 6,
-      title: "Elegant Jewelry Styling Guide",
-      image:
-        "https://images.unsplash.com/photo-1617038220319-276d3cfab638?q=80&w=1600&auto=format&fit=crop",
-      description:
-        "How to style elegant jewelry with modern fashion outfits.",
-    },
-  ];
+  // LOADING
+  if (loading) {
+
+    return (
+
+      <div className="min-h-screen bg-[#F5F4F2] flex justify-center items-center">
+
+        <h2 className="text-2xl font-semibold text-[#75232B] animate-pulse">
+          Loading Blogs...
+        </h2>
+
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#F5F4F2] pt-28 px-6 md:px-12 pb-16">
+
+    <div className="min-h-screen bg-[#F5F4F2] pt-28 px-4 md:px-12 pb-16">
 
       {/* HEADER */}
       <div className="text-center mb-14">
@@ -70,55 +49,89 @@ const Blogs = () => {
           Fashion Stories
         </p>
 
-        <h1 className="text-5xl font-bold text-[#75232B]">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#75232B]">
           Latest Blogs
         </h1>
 
       </div>
 
-      {/* BLOG GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* EMPTY */}
+      {items.length === 0 ? (
 
-        {blogData.map((blog) => (
+        <div className="flex flex-col items-center justify-center mt-20">
 
-          <div
-            key={blog.id}
-            className="bg-white rounded-3xl overflow-hidden shadow-lg group cursor-pointer"
-          >
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png"
+            alt="empty"
+            className="w-32 opacity-70 mb-6"
+          />
 
-            {/* IMAGE */}
-            <div className="overflow-hidden">
+          <h2 className="text-2xl font-bold text-[#75232B] mb-2">
+            No Blogs Available
+          </h2>
 
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-full h-[280px] object-cover transition duration-500 group-hover:scale-110"
-              />
+          <p className="text-gray-500">
+            Blogs will appear here
+          </p>
+
+        </div>
+
+      ) : (
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          {items.map((item) => (
+
+            <div
+              key={item._id}
+              className="bg-white rounded-3xl overflow-hidden shadow-lg group cursor-pointer hover:shadow-2xl transition duration-300"
+            >
+
+              {/* IMAGE */}
+              <div className="overflow-hidden">
+
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/500";
+                  }}
+                  className="w-full h-[280px] object-cover transition duration-700 group-hover:scale-110"
+                />
+
+              </div>
+
+              {/* CONTENT */}
+              <div className="p-6">
+
+                <h2 className="text-2xl font-bold text-[#75232B] mb-4 leading-tight">
+
+                  {item.title}
+
+                </h2>
+
+                <p className="text-gray-600 leading-7 line-clamp-3">
+
+                  {item.description}
+
+                </p>
+
+                <button
+                  onClick={() =>
+                    navigate(`/blogs/${item._id}`)
+                  }
+                  className="mt-6 text-[#75232B] font-semibold hover:underline"
+                >
+                  Read More →
+                </button>
+
+              </div>
 
             </div>
-
-            {/* CONTENT */}
-            <div className="p-6">
-
-              <h2 className="text-2xl font-bold text-[#75232B] mb-4">
-                {blog.title}
-              </h2>
-
-              <p className="text-gray-600 leading-7">
-                {blog.description}
-              </p>
-
-              <button
-                className="mt-6 text-[#75232B] font-semibold hover:underline"
-              >
-                Read More →
-              </button>
-
-            </div>
-
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -23,15 +23,7 @@ const Footer = () => {
           <ul className="space-y-3 text-sm text-gray-600">
 
             <li className="hover:text-[#75232B] cursor-pointer">
-              Men
-            </li>
-
-            <li className="hover:text-[#75232B] cursor-pointer">
               Women
-            </li>
-
-            <li className="hover:text-[#75232B] cursor-pointer">
-              Kids
             </li>
 
             <li className="hover:text-[#75232B] cursor-pointer">
@@ -48,10 +40,6 @@ const Footer = () => {
 
             <li className="hover:text-[#75232B] cursor-pointer">
               Gift Cards
-            </li>
-
-            <li className="hover:text-[#75232B] cursor-pointer">
-              Myntra Insider
             </li>
 
           </ul>
@@ -88,10 +76,6 @@ const Footer = () => {
 
             <li className="hover:text-[#75232B] cursor-pointer">
               Cleartrip
-            </li>
-
-            <li className="hover:text-[#75232B] cursor-pointer">
-              Myntra Global
             </li>
 
           </ul>
